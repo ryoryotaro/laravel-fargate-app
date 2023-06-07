@@ -9,12 +9,12 @@ env:
   AWS_REGION: ap-northeast-1
 
 jobs:
-  permissions:
-    id-token: write
-    contents: read
   deploy:
     name: Deploy app to AWS Fargate
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - name: Configure aws credentials for prod
         # if: github.ref == 'refs/heads/main'
