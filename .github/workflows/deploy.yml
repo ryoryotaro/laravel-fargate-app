@@ -9,6 +9,9 @@ env:
   AWS_REGION: ap-northeast-1
 
 jobs:
+  permissions:
+    id-token: write
+    contents: read
   deploy:
     name: Deploy app to AWS Fargate
     runs-on: ubuntu-latest
