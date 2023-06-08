@@ -18,16 +18,18 @@ jobs:
 
     steps:
       - name: Configure aws credentials for prod
-        if: github.ref == 'refs/heads/main'
-        uses: aws-actions/configure-aws-credentials@v1
+        if: github.ref == 're      - name: Cache npm
+        id: cache-npm-ci
+        uses: actions/cache@v2
         with:
-          aws-access-key-id: ${{ secrets.PROD_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.PROD_AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
-          role-to-assume: ${{ secrets.PROD_AWS_ASSUME_ROLE_ARN }}
-          role-duration-seconds: 1800
+          path: backend/node_modules
+          key: npm-v1-${{ hashFiles('backend/package-lock.json') }}
 
-      - name: Set env vars for prod
+      - run: docker-compose exec -T web npm ci
+        if: ${{ !steps.cache-npm-ci.outputs.cache-hit }}
+
+      - run: docker-compose exec -T web npm run prod
+ prod
         if: github.ref == 'refs/heads/main'
         run: echo "ENV_NAME=prod" >> $GITHUB_ENV
 
