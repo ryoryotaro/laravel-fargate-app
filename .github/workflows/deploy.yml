@@ -37,13 +37,13 @@ jobs:
       - run: docker-compose up -d --build app web
 
 
-  - name: Laravel Setup
-    run: |
-      docker-compose exec -T app composer create-project --prefer-dist laravel/laravel .
-      docker-compose exec -T app php artisan key:generate
-      docker-compose exec -T app php artisan storage:link
-      docker-compose exec -T app chmod -R 777 storage bootstrap/cache
-      docker-compose exec -T app php artisan migrate
+      - name: Laravel Setup
+        run: |
+          docker-compose exec -T app composer create-project --prefer-dist laravel/laravel .
+          docker-compose exec -T app php artisan key:generate
+          docker-compose exec -T app php artisan storage:link
+          docker-compose exec -T app chmod -R 777 storage bootstrap/cache
+          docker-compose exec -T app php artisan migrate
 
       - run: docker-compose exec -T app composer install -n --prefer-dist --no-dev
         if: ${{ !steps.cache-composer.outputs.cache-hit }}
